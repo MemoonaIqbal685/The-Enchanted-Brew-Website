@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enchanted Brew | Wizarding Sanctuary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #050505;
+            --wizard-brown: #4a2c16;
+            --glow: rgba(212, 175, 55, 0.4);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background: #020205;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: url('https://cdn-icons-png.flaticon.com/32/1067/1067357.png'), auto;
+        }
+
+        /* --- MAGIC STARS & FOG --- */
+        .star-background {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a0f2e 0%, #020205 100%);
+        }
+
+        .stars-layer {
+            position: absolute;
+            top: 0; left: 0; width: 2px; height: 2px;
+            background: transparent;
+            box-shadow: 100px 200px #FFF, 500px 600px #FFF, 800px 150px #FFF, 1200px 400px #FFF, 1500px 800px #FFF, 300px 700px #FFF, 1800px 200px #FFF;
+            animation: starsAnimation 80s linear infinite;
+        }
+
+        /* --- FLOATING CANDLES --- */
+        .candle {
+            position: absolute;
+            width: 4px;
+            height: 20px;
+            background: #fff;
+            border-radius: 2px;
+            box-shadow: 0 0 10px #fff, 0 -5px 15px orange;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+
+        .sanctuary-section {
+            z-index: 10;
+            width: 90%;
+            max-width: 1100px;
+            padding: 60px;
+            background: rgba(15, 12, 8, 0.85);
+            border: 2px solid var(--gold);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 100px rgba(212, 175, 55, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sanctuary-left h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.8rem;
+            color: var(--gold);
+            line-height: 1;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 10px black, 0 0 20px var(--glow);
+            margin-bottom: 10px;
+        }
+
+        .sanctuary-left p {
+            font-family: 'Lora', serif;
+            color: #d4c4a8;
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .visit-btn {
+            background-color: var(--wizard-brown);
+            color: #f0e6d2;
+            font-family: 'Cinzel', serif;
+            text-decoration: none;
+            padding: 15px 45px;
+            border-radius: 4px;
+            border: 1px solid var(--gold);
+            transition: 0.4s;
+            letter-spacing: 2px;
+            display: inline-block;
+        }
+
+        .visit-btn:hover {
+            background-color: var(--gold);
+            color: #1a1425;
+            box-shadow: 0 0 30px var(--gold);
+            transform: scale(1.05);
+        }
+
+        .sanctuary-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            max-width: 500px;
+        }
+
+        .sanctuary-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            filter: sepia(0.3) contrast(1.1);
+            transition: 0.5s;
+        }
+
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: rgba(74, 44, 22, 0.9);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--glow);
+            transition: 0.3s;
+            font-size: 1.8rem;
+        }
+
+        @keyframes starsAnimation {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+    </style>
+</head>
+<body onclick="enableAudio()"> 
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div class="star-background" id="magic-bg">
+        <div class="stars-layer"></div>
+    </div>
+
+    <section class="sanctuary-section">
+        <div class="sanctuary-left">
+            <h2>The<br>Enchanted<br>Brew</h2>
+            <p>"Spells are brewed, secrets are shared."</p>
+            <a href="home.html" class="visit-btn" onclick="enableAudio()">ENTER SANCTUARY</a>
+        </div>
+
+        <div class="sanctuary-right">
+            <img src="C:\Users\user\Desktop\Coffe shop\Pictures\cristian-cristian-7CwiC9GFzxA-unsplash.jpg" alt="Cozy Coffee" class="sanctuary-img">
+            <img src="C:\Users\user\Desktop\Coffe shop\Pictures\Screenshot 2025-09-25 114206.png" alt="Warm Brew" class="sanctuary-img">
+            <img src="C:\Users\user\Desktop\Coffe shop\Pictures\wajahat-raja-Ge7PjcXipZY-unsplash.jpg" alt="Magic Cup" class="sanctuary-img">
+            <img src="C:\Users\user\Desktop\Coffe shop\Pictures\Screenshot 2025-11-13 190203.png" alt="Wizard's Desk" class="sanctuary-img">
+        </div>
+    </section>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    icon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Click detected, music playing..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (music.paused) {
+                music.play();
+                icon.innerText = "🔊";
+            } else {
+                music.pause();
+                icon.innerText = "🔇";
+            }
+        }
+
+        function initMagic() {
+            const bg = document.getElementById('magic-bg');
+            for (let i = 0; i < 20; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candle';
+                candle.style.left = Math.random() * 100 + 'vw';
+                candle.style.top = Math.random() * 100 + 'vh';
+                candle.style.animationDelay = Math.random() * 5 + 's';
+                bg.appendChild(candle);
+            }
+        }
+        window.onload = initMagic;
+    </script>
+</body>
+</html>

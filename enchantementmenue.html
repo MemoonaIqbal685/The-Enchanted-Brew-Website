@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | The Enchanted Brew</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0d0a14;
+            --card-bg: #1a1425;
+            --text-color: #f0e6d2;
+            --accent-blue: #70a1ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Lora', serif;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1a1425 0%, #0d0a14 100%);
+        }
+
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        h1, h2, h3, .nav-logo {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(13, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo { font-size: 1.2rem; text-decoration: none; font-weight: bold; }
+        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        header { padding: 60px 20px; }
+        .main-title { font-size: 3.5rem; margin: 0; }
+        .tagline { font-style: italic; margin-top: 10px; opacity: 0.9; font-size: 1.2rem; }
+
+        .separator {
+            width: 60%; border: 0; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 40px auto; opacity: 0.5;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+        }
+
+        .magic-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 40px 20px 25px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            margin-top: 30px;
+        }
+
+        .magic-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .item-sticker {
+            position: absolute;
+            top: -35px;
+            right: 15px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background: var(--dark-bg);
+            z-index: 2;
+        }
+
+        .item-sticker img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(10%);
+        }
+
+        .price {
+            color: var(--gold);
+            font-weight: bold;
+            float: right;
+            font-family: 'Cinzel', serif;
+            margin-top: 5px;
+        }
+
+        .item-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .section-title { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-subtitle { opacity: 0.7; margin-bottom: 50px; }
+
+        footer { padding: 60px 20px; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(212, 175, 55, 0.1); }
+        .mischief { letter-spacing: 4px; color: var(--gold); font-family: 'Cinzel', serif; margin-top: 20px; }
+
+        /* Sound Control Button Style */
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1001;
+            background: rgba(26, 20, 37, 0.9);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+    </style>
+</head>
+<body onclick="enableAudio()">
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div id="stars-container"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">THE ENCHANTED BREW</a>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="enchantementmenue.html">MENU</a></li>
+            <li><a href="recipes.html">RECIPES</a></li>
+            <li><a href="contact22.html">CONTACT</a></li>
+            <li><a href="community.html">COMMUNITY</a></li>
+            <li><a href="order.html">ORDER NOW</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1 class="main-title">THE ENCHANTED BREW'S MENU</h1>
+        <p class="tagline">"I solemnly swear that I am up to no good... ordering coffee"</p>
+        <div class="owl-icon" style="font-size: 40px; margin-top: 20px;">🦉</div>
+    </header>
+
+    <hr class="separator">
+
+    <section>
+        <h2 class="section-title">MAGICAL BREWS</h2>
+        <p class="section-subtitle">Potions brewed to awaken your magical core</p>
+        <div class="grid-container" id="coffee-grid">
+            </div>
+    </section>
+
+    <hr class="separator">
+
+    <section>
+        <h2 class="section-title">SWEET TREATS</h2>
+        <p class="section-subtitle">Baked enchantments from our pastry wizards</p>
+        <div class="grid-container" id="dessert-grid">
+            </div>
+    </section>
+
+    <footer>
+        <h2 class="footer-logo">THE ENCHANTED BREW</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <span>🪄</span> <span>🌙</span> <span>⭐</span> <span>🦉</span>
+        </div>
+        <p class="mischief">"MISCHIEF MANAGED"</p>
+        <p class="copyright">&copy; 2025 The Enchanted Brew. All magical rights reserved.</p>
+    </footer>
+
+    <script>
+        // Audio Logic
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    icon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Waiting for user interaction..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (music.paused) {
+                music.play();
+                icon.innerText = "🔊";
+            } else {
+                music.pause();
+                icon.innerText = "🔇";
+            }
+        }
+
+        // Menu Data
+        const coffees = [
+            {name: "The Patronus Brew", desc: "Espresso infused with silver mist & hope", price: "5.50", img: "Coffe/nathan-dumlao-dAYJfrtVjh0-unsplash.jpg"},
+            {name: "Polyjuice Latte", desc: "Changes flavor with every mystical sip", price: "6.25", img: "Coffe/Screenshot 2025-12-25 203539.png"},
+            {name: "Butterbeer Cap", desc: "Creamy butterscotch with frothy foam", price: "5.75", img: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300"},
+            {name: "Felix Felicis Gold", desc: "Liquid luck in every golden drop", price: "7.00", img: "https://images.unsplash.com/photo-1610889556528-9a770e32642f?w=300"},
+            {name: "Midnight Mocha", desc: "Dark chocolate under the full moon", price: "5.95", img: "Coffe/Screenshot 2025-12-25 205710.png"},
+            {name: "Wizard's Mist", desc: "Swirling lavender-infused tea-latte", price: "6.00", img: "Coffe/Screenshot 2025-12-25 205847.png"},
+            {name: "Dragon's Breath", desc: "Extra spicy cinnamon roasted blend", price: "6.50", img: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=300"},
+            {name: "Phoenix Sunrise", desc: "Orange zest infused bright roast", price: "6.20", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300"},
+            {name: "Grim's Espresso", desc: "Strongest dark shot for the brave", price: "4.50", img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=300"},
+            {name: "Starlight Flat White", desc: "Creamy milk with edible star glitter", price: "6.10", img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300"},
+            {name: "Invisibility Iced Tea", desc: "Crystal clear peach infused brew", price: "5.50", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300"},
+            {name: "Pensieve Pour", desc: "Deep flavors that bring back memories", price: "6.80", img: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=300"}
+        ];
+
+        const desserts = [
+            {name: "Chocolate Frog Cake", desc: "Enchanted chocolate with a leap of flavor", price: "7.50", img: "Coffe/Screenshot 2025-12-25 210315.png"},
+            {name: "Treacle Tart Supreme", desc: "Harry's favorite, golden & divine", price: "5.95", img: "Coffe/Screenshot 2025-12-25 210627.png"},
+            {name: "Cauldron Cake", desc: "Bubbling with chocolate wonder", price: "8.25", img: "Coffe/Screenshot 2025-12-25 210756.png"},
+            {name: "Snitch Golden Truffle", desc: "Hazelnut core with gold leaf wings", price: "4.50", img: "https://images.unsplash.com/photo-1548907040-4baa42d10919?w=300"},
+            {name: "Unicorn Velvet", desc: "Rainbow layered cake with magic dust", price: "7.00", img: "Coffe/Screenshot 2025-12-25 210940.png"},
+            {name: "Owl Post Brownies", desc: "Delivered fresh with nutty goodness", price: "5.25", img: "Coffe/Screenshot 2025-12-25 211213.png"},
+            {name: "Forbidden Forest Tart", desc: "Dark berries and cocoa crust", price: "6.50", img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=300"},
+            {name: "Sorting Hat Cupcake", desc: "Hidden color inside tells your house", price: "5.50", img: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?w=300"},
+            {name: "Mandragora Muffin", desc: "Herbal ginger muffin (doesn't scream)", price: "4.95", img: "Coffe/Screenshot 2025-12-25 211352.png"}
+        ];
+
+        function renderMenu(items, containerId) {
+            const container = document.getElementById(containerId);
+            items.forEach(item => {
+                const card = `
+                    <div class="magic-card">
+                        <div class="item-sticker">
+                            <img src="${item.img}" alt="${item.name}">
+                        </div>
+                        <span class="price">$${item.price}</span>
+                        <h3>${item.name}</h3>
+                        <p class="item-desc">${item.desc}</p>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function initMagic() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 2.5}px`;
+                star.style.height = star.style.width;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+                container.appendChild(star);
+            }
+
+            renderMenu(coffees, 'coffee-grid');
+            renderMenu(desserts, 'dessert-grid');
+        }
+
+        window.onload = initMagic;
+    </script>
+</body>
+</html>

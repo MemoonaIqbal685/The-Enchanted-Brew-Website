@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | The Enchanted Brew</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0d0a14;
+            --card-bg: #1a1425;
+            --text-color: #f0e6d2;
+            --accent-blue: #70a1ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Lora', serif;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1a1425 0%, #0d0a14 100%);
+        }
+
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        h1, h2, h3, .cta-button, .order-now-btn {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(13, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex; gap: 25px;
+            margin: 0; padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        header { padding: 80px 20px; }
+        .main-title { font-size: 3.5rem; margin: 0; }
+        .tagline { font-style: italic; margin-top: 10px; opacity: 0.9; font-size: 1.2rem; }
+        .intro-text { max-width: 650px; margin: 40px auto; line-height: 1.8; font-size: 1.1rem; }
+
+        .order-now-btn, .cta-button {
+            background-color: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 12px 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.4s;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .cta-button { background-color: var(--gold); color: #1a1425; padding: 18px 40px; margin-bottom: 40px; }
+        .order-now-btn:hover, .cta-button:hover {
+            box-shadow: 0 0 15px var(--gold);
+            transform: translateY(-3px);
+        }
+
+        .owl-icon { font-size: 60px; margin-top: 20px; filter: drop-shadow(0 0 10px var(--gold)); }
+
+        .separator {
+            width: 60%; border: 0; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 60px auto; opacity: 0.5;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 20px 60px 20px;
+        }
+
+        .magic-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 40px 25px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .magic-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .card-icon { font-size: 40px; margin-bottom: 15px; }
+        .label-title { color: var(--accent-blue); font-size: 0.85rem; text-transform: uppercase; display: block; margin-bottom: 15px; }
+        
+        .specialty {
+            margin-top: 25px; font-size: 0.8rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px; color: var(--gold);
+        }
+
+        footer { padding: 80px 20px; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(212, 175, 55, 0.1); }
+
+        /* Sound Control Button Style */
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: rgba(26, 20, 37, 0.9);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+    </style>
+</head>
+<body onclick="enableAudio()">
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div id="stars-container"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">THE ENCHANTED BREW</a>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="enchantementmenue.html">MENU</a></li>
+            <li><a href="recipes.html">RECIPES</a></li>
+            <li><a href="contact22.html">CONTACT</a></li>
+            <li><a href="community.html">COMMUNITY</a></li>
+            <li><a href="order.html">ORDER NOW</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1 class="main-title">THE ENCHANTED BREW</h1>
+        <p class="tagline">"Where Every Sip is a Spell"</p>
+        <div class="intro-text">
+            <p>Step into our mystical coffee sanctuary, where ancient brewing secrets meet magical flavors.</p>
+        </div>
+        <button class="order-now-btn" onclick="window.location.href='order.html'">ORDER NOW</button><br>
+        <button class="cta-button" onclick="window.location.href='file:///C:/xampp/htdocs/Home%20in%20Mug/enchantementmenue.html'">EXPLORE OUR POTIONS</button>
+        <div class="owl-icon">🦉</div>
+    </header>
+
+    <hr class="separator">
+
+    <section class="staff-section">
+        <h2 class="section-title">OUR MAGICAL STAFF</h2>
+        <p class="section-subtitle">Meet the enchanting creatures who bring magic to every cup</p>
+        
+        <div class="grid-container">
+            <div class="magic-card">
+                <div class="card-icon">🦉</div>
+                <h3>OLLIE THE OWL</h3>
+                <span class="label-title">Head Barista</span>
+                <p>With centuries of wisdom, Ollie crafts each brew with ancient precision.</p>
+                <div class="specialty">Specialty: <strong>MIDNIGHT MOCHA</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <div class="card-icon">🦊</div>
+                <h3>FELIX THE FOX</h3>
+                <span class="label-title">Pastry Enchanter</span>
+                <p>A mischievous spirit who bakes treats that shimmer with magic.</p>
+                <div class="specialty">Specialty: <strong>SNITCH COOKIES</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <div class="card-icon">🐉</div>
+                <h3>EMBER</h3>
+                <span class="label-title">Roast Master</span>
+                <p>Every bean is perfectly fire-roasted with real dragon's breath.</p>
+                <div class="specialty">Specialty: <strong>FIRE ESPRESSO</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <div class="card-icon">🐈‍⬛</div>
+                <h3>LUNA</h3>
+                <span class="label-title">Cream Alchemist</span>
+                <p>Whisks secret moonlight into the fluffiest foam ever tasted.</p>
+                <div class="specialty">Specialty: <strong>SILVER CAPPUCCINO</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <div class="card-icon">🦄</div>
+                <h3>CELESTE</h3>
+                <span class="label-title">Flavor Weaver</span>
+                <p>Adds a touch of stardust to create colors you've never seen.</p>
+                <div class="specialty">Specialty: <strong>RAINBOW LATTE</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <div class="card-icon">🐸</div>
+                <h3>BARNABY</h3>
+                <span class="label-title">Herb Consultant</span>
+                <p>Expert in rare roots and botanical infusions for deep energy.</p>
+                <div class="specialty">Specialty: <strong>ELIXIR OF VIGOR</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="separator">
+
+    <section class="coffee-section">
+        <h2 class="section-title">OUR SIGNATURE POTIONS</h2>
+        <p class="section-subtitle">Liquid magic brewed for the soul</p>
+        
+        <div class="grid-container">
+            <div class="magic-card">
+                <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=500&q=80" alt="Moonlight Latte" class="card-img">
+                <h3>MOONLIGHT LATTE</h3>
+                <span class="label-title">Magical Brew</span>
+                <p>Infused with silver dust and vanilla bean, harvested under a full moon.</p>
+                <div class="specialty">Effect: <strong>LUCID DREAMING</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?auto=format&fit=crop&w=500&q=80" alt="Phoenix Roast" class="card-img">
+                <h3>PHOENIX ROAST</h3>
+                <span class="label-title">Magical Brew</span>
+                <p>A spicy cinnamon-infused Americano that warms your very core.</p>
+                <div class="specialty">Effect: <strong>INSTANT ENERGY</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80" alt="Frost Fairy Mint" class="card-img">
+                <h3>FROST FAIRY MINT</h3>
+                <span class="label-title">Magical Brew</span>
+                <p>A cold brew blended with enchanted mint and glowing whipped cream.</p>
+                <div class="specialty">Effect: <strong>MIND CLARITY</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <img src="C:\Users\user\Desktop\Coffe shop\Pictures\lex-sirikiat-1tEkissU8dY-unsplash.jpg" alt="Golden Snitch Latte" class="card-img">
+                <h3>GOLDEN MACCHIATO</h3>
+                <span class="label-title">Magical Brew</span>
+                <p>Drizzled with 24k edible gold honey and a pinch of luck.</p>
+                <div class="specialty">Effect: <strong>GOOD FORTUNE</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <img src="C:\Users\user\Desktop\Coffe shop\Pictures\espresso!!! _3.jpeg" alt="Shadow Brew" class="card-img">
+                <h3>SHADOW BREW</h3>
+                <span class="label-title">Magical Brew</span>
+                <p>Darkest cocoa mixed with espresso for those who love the night.</p>
+                <div class="specialty">Effect: <strong>NIGHT VISION</strong></div>
+            </div>
+
+            <div class="magic-card">
+                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80" alt="Wizards Mist" class="card-img">
+                <h3>WIZARD'S MIST</h3>
+                <span class="label-title">Magical Brew</span>
+                <p>A swirling lavender-infused tea-latte that floats in the cup.</p>
+                <div class="specialty">Effect: <strong>LEVITATION FEELING</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2 class="footer-logo">THE ENCHANTED BREW</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <span>🪄</span> <span>🌙</span> <span>⭐</span> <span>🦉</span>
+        </div>
+        <p class="mischief">"MISCHIEF MANAGED"</p>
+        <p class="copyright">&copy; 2025 The Enchanted Brew. All magical rights reserved.</p>
+    </footer>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        // Sound enable karne ka function (Jaise hi user page par click kare)
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    icon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Waiting for user interaction..."));
+            }
+        }
+
+        // Manual Play/Pause Toggle
+        function toggleMusic(event) {
+            event.stopPropagation(); // Body click trigger na ho jaye
+            if (music.paused) {
+                music.play();
+                icon.innerText = "🔊";
+            } else {
+                music.pause();
+                icon.innerText = "🔇";
+            }
+        }
+
+        function initMagic() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 2.5}px`;
+                star.style.height = star.style.width;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+                container.appendChild(star);
+            }
+        }
+
+        function castSpell() { 
+            enableAudio(); 
+            alert("✨ A summoning charm has been cast!"); 
+        }
+
+        window.onload = initMagic;
+    </script>
+</body>
+</html>

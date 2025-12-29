@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | The Enchanted Brew</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0d0a14;
+            --card-bg: #1a1425;
+            --text-color: #f0e6d2;
+            --accent-blue: #70a1ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Lora', serif;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1a1425 0%, #0d0a14 100%);
+        }
+
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        h1, h2, h3, .nav-logo {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(13, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo { font-size: 1.2rem; text-decoration: none; font-weight: bold; }
+        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* --- COMMUNITY HEADER --- */
+        header { padding: 60px 20px; }
+        .main-title { font-size: 3rem; margin: 0; }
+        .sticker-header { font-size: 50px; animation: float 3s infinite ease-in-out; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- FEEDBACK CARDS --- */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .fan-card {
+            background: var(--card-bg);
+            border: 1.5px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            text-align: left;
+            transition: 0.3s;
+        }
+
+        .fan-card:hover { transform: scale(1.03); border-color: var(--gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+
+        .profile-pic {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        .rating { color: var(--gold); font-size: 1.2rem; margin-bottom: 10px; }
+        .magical-sticker { position: absolute; top: -10px; right: -10px; font-size: 40px; }
+
+        /* --- OWL POST FORM --- */
+        .owl-post-section {
+            background: rgba(26, 20, 37, 0.6);
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px dashed var(--gold);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: #0d0a14;
+            border: 1px solid var(--gold);
+            color: white;
+            font-family: 'Lora';
+            border-radius: 8px;
+        }
+
+        .send-btn {
+            background: var(--gold);
+            color: #0d0a14;
+            border: none;
+            padding: 15px 40px;
+            font-family: 'Cinzel';
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 5px;
+        }
+
+        .send-btn:hover { background: #fff; box-shadow: 0 0 20px var(--gold); }
+
+        /* MUSIC TOGGLE STYLE */
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1001;
+            background: rgba(26, 20, 37, 0.9);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        footer { padding: 60px 20px; border-top: 1px solid rgba(212, 175, 55, 0.1); }
+
+        @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+    </style>
+</head>
+<body onclick="enableAudio()">
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div id="stars-container"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">THE ENCHANTED BREW</a>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="enchantementmenue.html">MENU</a></li>
+            <li><a href="recipes.html">RECIPES</a></li>
+            <li><a href="contact22.html">CONTACT</a></li>
+            <li><a href="community.html" style="color: var(--gold);">COMMUNITY</a></li>
+            <li><a href="order.html">ORDER NOW</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="sticker-header">🧙‍♂️✨📖</div>
+        <h1 class="main-title">THE WIZARD'S CIRCLE</h1>
+        <p class="tagline">Join thousands of magic-lovers from across the realm</p>
+    </header>
+
+    <div class="community-grid" id="reviews-container">
+        <div class="fan-card"><span class="magical-sticker">🦉</span><img src="https://i.pravatar.cc/150?u=1" class="profile-pic"><h3>Arthur Weasley</h3><div class="rating">⭐⭐⭐⭐⭐</div><p>"The Midnight Mocha is even more fascinating than a rubber duck! Pure magic in a cup."</p></div>
+        <div class="fan-card"><span class="magical-sticker">⚡</span><img src="https://i.pravatar.cc/150?u=2" class="profile-pic"><h3>Luna Lovegood</h3><div class="rating">⭐⭐⭐⭐⭐</div><p>"I suspect the Silver Cappuccino is actually brewed by Nargles, but the taste is heavenly."</p></div>
+        <div class="fan-card"><span class="magical-sticker">🔮</span><img src="https://i.pravatar.cc/150?u=3" class="profile-pic"><h3>Neville Longbottom</h3><div class="rating">⭐⭐⭐⭐</div><p>"The Elixir of Vigor helped me remember where I put my Remembrall! 10/10 would recommend."</p></div>
+        <div class="fan-card"><span class="magical-sticker">📜</span><img src="https://i.pravatar.cc/150?u=4" class="profile-pic"><h3>Minerva McGonagall</h3><div class="rating">⭐⭐⭐⭐⭐</div><p>"Transfiguration is hard work; their Strong Espresso is the only thing that keeps me sharp."</p></div>
+        <div class="fan-card"><span class="magical-sticker">🧪</span><img src="https://i.pravatar.cc/150?u=5" class="profile-pic"><h3>Severus Snape</h3><div class="rating">⭐⭐⭐⭐⭐</div><p>"I have a refined palate for potions, and their Polyjuice Latte is... acceptable. High praise, indeed."</p></div>
+        <div class="fan-card"><span class="magical-sticker">🍺</span><img src="https://i.pravatar.cc/150?u=6" class="profile-pic"><h3>Rubeus Hagrid</h3><div class="rating">⭐⭐⭐⭐⭐</div><p>"Great place! Brought Fang along, and they gave him a bowl of magical water. Best brew in Hogsmeade!"</p></div>
+    </div>
+
+    <section class="owl-post-section">
+        <h2>SEND AN OWL POST 📩</h2>
+        <p>Have a magical suggestion or a secret recipe? Send it to our Head Barista!</p>
+        <form id="owlForm">
+            <input type="text" id="wizardName" placeholder="Your Wizard Name (e.g. Albus)" required>
+            <input type="email" id="owlEmail" placeholder="Your Owl Address (Email)" required>
+            <textarea id="wizardMessage" rows="5" placeholder="Cast your thoughts here..." required></textarea>
+            <button type="submit" class="send-btn">RELEASE THE OWL 🦉</button>
+        </form>
+    </section>
+
+    <h2 style="margin-top: 50px;">MEMORIES FROM THE BREW 🖼️</h2>
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; padding: 20px;">
+        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=200" style="border: 3px solid var(--gold); border-radius: 10px; width: 150px; transform: rotate(-5deg);">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200" style="border: 3px solid var(--gold); border-radius: 10px; width: 150px; transform: rotate(5deg);">
+        <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200" style="border: 3px solid var(--gold); border-radius: 10px; width: 150px; transform: rotate(-3deg);">
+    </div>
+
+    <footer>
+        <h2 class="footer-logo">THE ENCHANTED BREW</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <span>🪄</span> <span>🌙</span> <span>⭐</span> <span>🦉</span>
+        </div>
+        <p style="color: var(--gold); letter-spacing: 3px;">MISCHIEF MANAGED</p>
+        <p>&copy; 2025 The Enchanted Brew Community</p>
+    </footer>
+
+    <script>
+        // Audio Logic
+        const music = document.getElementById('bg-music');
+        const musicBtnIcon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    musicBtnIcon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Waiting for user interaction..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (music.paused) {
+                music.play();
+                musicBtnIcon.innerText = "🔊";
+            } else {
+                music.pause();
+                musicBtnIcon.innerText = "🔇";
+            }
+        }
+
+        const reviewsContainer = document.getElementById('reviews-container');
+        const owlForm = document.getElementById('owlForm');
+
+        // Stars Magic Effect
+        function initMagic() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 2.5}px`;
+                star.style.height = star.style.width;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+                container.appendChild(star);
+            }
+            fetchReviews(); 
+        }
+
+        async function fetchReviews() {
+            try {
+                const response = await fetch('http://localhost:5000/api/reviews');
+                const reviews = await response.json();
+                reviews.forEach(r => createCard(r.name, r.message));
+            } catch (err) { console.log("Server magic is sleeping..."); }
+        }
+
+        function createCard(name, message) {
+            const card = document.createElement('div');
+            card.className = 'fan-card';
+            card.innerHTML = `
+                <span class="magical-sticker">✨</span>
+                <img src="https://i.pravatar.cc/150?u=${name}" class="profile-pic">
+                <h3>${name}</h3>
+                <div class="rating">⭐⭐⭐⭐⭐</div>
+                <p>"${message}"</p>
+            `;
+            reviewsContainer.prepend(card);
+        }
+
+        owlForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('wizardName').value;
+            const message = document.getElementById('wizardMessage').value;
+
+            createCard(name, message);
+
+            try {
+                await fetch('http://localhost:5000/api/reviews', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ name: name, message: message })
+                });
+                alert('Your message has been whisked away by an owl! 🦉✨');
+            } catch (err) {
+                console.error("Database error:", err);
+            }
+
+            owlForm.reset();
+        };
+
+        window.onload = initMagic;
+    </script>
+</body>
+</html>

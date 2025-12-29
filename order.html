@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order | The Enchanted Brew</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0d0a14;
+            --card-bg: #1a1425;
+            --text-color: #f0e6d2;
+            --parchment: #f4e4bc;
+            --deep-brown: #5d4037;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(circle at center, #1a1425 0%, #0d0a14 100%);
+            color: var(--text-color);
+            font-family: 'Lora', serif;
+            margin: 0;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        #stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* NAVIGATION & HEADER */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 50px; background: rgba(13, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .nav-logo { font-family: 'Cinzel', serif; color: var(--gold); font-size: 1.2rem; text-decoration: none; font-weight: bold; }
+        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* MAIN CONTAINER */
+        .order-wrapper { padding: 60px 20px; }
+        h1, h2, label, .order-btn, .tab-btn {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .order-container {
+            max-width: 650px; margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        /* CATEGORY SWITCHER STICKERS */
+        .category-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .tab-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            padding: 10px 20px; color: var(--gold);
+            cursor: pointer; border-radius: 50px;
+            transition: 0.4s; font-size: 0.8rem;
+        }
+        .tab-btn.active { background: var(--gold); color: #1a1425; box-shadow: 0 0 15px var(--gold); }
+
+        /* FORM STYLING */
+        .parchment-form {
+            background: var(--parchment);
+            padding: 35px; border-radius: 10px;
+            border: 5px double var(--deep-brown);
+            color: #2c1e1a; position: relative;
+        }
+        .parchment-form::before {
+            content: '📜'; position: absolute; top: -20px; right: -20px; font-size: 2.5rem; transform: rotate(15deg);
+        }
+
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 0.85rem; color: var(--deep-brown); }
+
+        input, select, textarea {
+            width: 100%; padding: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--deep-brown);
+            border-radius: 4px; font-family: 'Lora', serif;
+            outline: none;
+        }
+
+        .order-btn {
+            background: var(--deep-brown); color: var(--gold);
+            padding: 18px; border: none; width: 100%;
+            cursor: pointer; font-size: 1.1rem; border-radius: 5px;
+            transition: 0.4s; margin-top: 15px; font-weight: bold;
+        }
+        .order-btn:hover { background: #3e2723; box-shadow: 0 5px 15px rgba(0,0,0,0.4); transform: translateY(-2px); }
+
+        /* MUSIC TOGGLE STYLE */
+        .music-toggle {
+            position: fixed; bottom: 30px; right: 30px; z-index: 1001;
+            background: rgba(26, 20, 37, 0.9); border: 2px solid var(--gold);
+            color: var(--gold); width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* FOOTER */
+        footer { padding: 60px 20px; background: rgba(0,0,0,0.4); border-top: 1px solid rgba(212, 175, 55, 0.1); margin-top: 80px; }
+        .mischief { font-family: 'Cinzel'; color: var(--gold); opacity: 0.7; }
+
+        @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+    </style>
+</head>
+<body onclick="enableAudio()">
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div id="stars-container"></div>
+
+    <nav>
+        <a href="home.html" class="nav-logo">THE ENCHANTED BREW</a>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="enchantementmenue.html">MENU</a></li>
+            <li><a href="recipes.html">RECIPES</a></li>
+            <li><a href="contact22.html">CONTACT</a></li>
+            <li><a href="community.html">COMMUNITY</a></li>
+            <li><a href="order.html" style="color: var(--gold);">ORDER NOW</a></li>
+        </ul>
+    </nav>
+
+    <div class="order-wrapper">
+        <header>
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">SUMMON YOUR TREATS 🦉</h1>
+            <p style="font-style: italic; opacity: 0.8; margin-bottom: 40px;">"The owl post is ready for your magical delivery"</p>
+        </header>
+
+        <div class="order-container">
+            <div class="category-tabs">
+                <button class="tab-btn active" onclick="switchMenu('potions', this)">🔮 POTIONS (COFFEE)</button>
+                <button class="tab-btn" onclick="switchMenu('desserts', this)">🍰 DESSERTS</button>
+            </div>
+
+            <form class="parchment-form" id="orderForm">
+                <div class="form-group">
+                    <label>🧙‍♂️ WIZARD NAME</label>
+                    <input type="text" id="custName" placeholder="Enter your magical identity" required>
+                </div>
+
+                <div class="form-group">
+                    <label id="menuLabel">✨ SELECT YOUR POTION</label>
+                    <select id="brewType" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>🔢 QUANTITY</label>
+                    <input type="number" id="qty" min="1" value="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label>🏠 DELIVERY CHAMBER (ADDRESS)</label>
+                    <textarea id="address" rows="3" placeholder="Which house/castle should we fly to?" required></textarea>
+                </div>
+
+                <button type="submit" class="order-btn">CAST ORDER SPELL ✨</button>
+            </form>
+            <div id="msg" style="margin-top:20px; font-weight:bold; color: var(--gold);"></div>
+        </div>
+    </div>
+
+    <footer>
+        <h2 style="font-family: 'Cinzel';">THE ENCHANTED BREW</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <span>🪄</span> <span>🌙</span> <span>⭐</span> <span>🦉</span>
+        </div>
+        <p class="mischief">"MISCHIEF MANAGED"</p>
+        <p>© 2025 The Enchanted Brew. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Audio Logic
+        const music = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    musicIcon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Waiting for user interaction..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (music.paused) {
+                music.play();
+                musicIcon.innerText = "🔊";
+            } else {
+                music.pause();
+                musicIcon.innerText = "🔇";
+            }
+        }
+
+        // Star Background Generation
+        const stars = document.getElementById('stars-container');
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement('div');
+            star.style.cssText = `position:absolute; left:${Math.random()*100}%; top:${Math.random()*100}%; width:2px; height:2px; background:white; border-radius:50%; animation:twinkle ${2+Math.random()*3}s infinite alternate; opacity:${Math.random()};`;
+            stars.appendChild(star);
+        }
+
+        // Menu Data
+        const menuItems = {
+            potions: ["Moonlight Latte", "Phoenix Roast", "Frost Fairy Mint", "Golden Macchiato", "Shadow Brew", "Wizard's Mist"],
+            desserts: ["Snitch Cookies", "Dragon Fire Brownie", "Unicorn Cupcake", "Enchanted Cheesecake", "Mandragora Tart"]
+        };
+
+        // Switch Logic
+        function switchMenu(category, btn) {
+            const select = document.getElementById('brewType');
+            const label = document.getElementById('menuLabel');
+            
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            label.innerText = category === 'potions' ? "✨ SELECT YOUR POTION" : "🍰 SELECT YOUR DESSERT";
+            
+            select.innerHTML = "";
+            menuItems[category].forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item;
+                opt.innerText = item;
+                select.appendChild(opt);
+            });
+        }
+
+        switchMenu('potions', document.querySelector('.tab-btn'));
+
+        // Handle Database Submission
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const msgDiv = document.getElementById('msg');
+            msgDiv.innerText = "Sending owl... 🦉";
+
+            const data = {
+                customer: document.getElementById('custName').value,
+                brew: document.getElementById('brewType').value,
+                quantity: document.getElementById('qty').value,
+                address: document.getElementById('address').value
+            };
+
+            try {
+                const res = await fetch('http://localhost:5000/api/order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if(res.ok) {
+                    msgDiv.innerText = "✨ Success! The owl has departed with your order.";
+                    document.getElementById('orderForm').reset();
+                    switchMenu('potions', document.querySelector('.tab-btn'));
+                }
+            } catch (err) {
+                msgDiv.style.color = "#ff7675";
+                msgDiv.innerText = "❌ Dark Magic Error: Owl lost its way (Check Server).";
+            }
+        });
+    </script>
+</body>
+</html>

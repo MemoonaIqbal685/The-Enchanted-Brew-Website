@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | The Enchanted Brew</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0d0a14;
+            --card-bg: #1a1425;
+            --text-color: #f0e6d2;
+            --accent-blue: #70a1ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Lora', serif;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1a1425 0%, #0d0a14 100%);
+        }
+
+        /* Star Background */
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(13, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            font-size: 1.2rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 25px;
+            margin: 0; padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        .container {
+            max-width: 950px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        /* Tale Section */
+        .tale-section {
+            padding: 60px 40px;
+            border: 1px solid var(--gold);
+            background: rgba(26, 20, 37, 0.6);
+            margin-bottom: 60px;
+            text-align: left;
+            position: relative;
+        }
+
+        .dropcap {
+            float: left;
+            font-size: 4rem;
+            line-height: 1;
+            padding-right: 15px;
+            color: var(--gold);
+            font-family: 'Cinzel';
+        }
+
+        /* Mission Section - Scroll Theme */
+        .mission-section {
+            background: #f4e4bc;
+            color: #2c1e14;
+            padding: 50px;
+            border-radius: 5px;
+            box-shadow: 10px 10px 0px var(--gold);
+            margin-bottom: 80px;
+            position: relative;
+            transform: rotate(-1deg);
+        }
+
+        .mission-section h2 { color: #2c1e14; text-shadow: none; }
+
+        /* Why Choose Us - Icons */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+            margin-bottom: 80px;
+        }
+
+        .feature-card {
+            background: rgba(26, 20, 37, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 30px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .feature-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+
+        /* Testimonials Section */
+        .testimonials {
+            margin-top: 80px;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-left: 4px solid var(--gold);
+            text-align: left;
+            font-style: italic;
+        }
+
+        .author {
+            display: block;
+            margin-top: 15px;
+            color: var(--gold);
+            font-family: 'Cinzel';
+            font-style: normal;
+            font-size: 0.9rem;
+        }
+
+        .motto {
+            margin-top: 40px;
+            font-style: italic;
+            color: var(--gold);
+        }
+
+        footer { padding: 60px 20px; background: rgba(0,0,0,0.3); margin-top: 60px; }
+
+        /* Sound Control Button Style */
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: rgba(26, 20, 37, 0.9);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        @keyframes twinkle {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body onclick="enableAudio()">
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div id="stars-container"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">THE ENCHANTED BREW</a>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="enchantementmenue.html">MENU</a></li>
+            <li><a href="recipes.html">RECIPES</a></li>
+            <li><a href="contact22.html">CONTACT</a></li>
+            <li><a href="community.html">COMMUNITY</a></li>
+            <li><a href="order.html">ORDER NOW</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>OUR ENCHANTING TALE</h1>
+        
+        <section class="tale-section">
+            <div class="tale-content">
+                <p><span class="dropcap">I</span>n the year 1847, beneath a crescent moon, a wandering wizard named Barnaby Brewsworth discovered an ancient tome hidden in the hollows of an enchanted oak. Within its weathered pages lay the secrets to brewing coffee with magical properties—each sip capable of sparking joy, clarity, and wonder.</p>
+                <p>Today, <strong>The Enchanted Brew</strong> stands as a sanctuary for those seeking refuge from the ordinary. Our doors open to wizards and muggles alike, offering a warm hearth, mysterious brews, and the promise that magic lives in every cup we serve.</p>
+            </div>
+            <div style="text-align: center; margin-top: 30px; color: var(--gold); font-size: 1.2rem;">
+                ~ EST. 1847 ~
+            </div>
+        </section>
+
+        <section class="mission-section">
+            <h2>📜 OUR SACRED MISSION</h2>
+            <p style="font-size: 1.2rem; line-height: 1.6;">"To protect the ancient art of magical brewing and to ensure that no weary traveler ever leaves our sanctuary without a spark of enchantment in their soul. We strive to bridge the gap between worlds, one potion—uh, coffee—at a time."</p>
+        </section>
+
+        <h2>WHY SEEK OUR SANCTUARY?</h2>
+        <div class="features">
+            <div class="feature-card">
+                <span class="feature-icon">🌿</span>
+                <h3>Forbidden Ingredients</h3>
+                <p>We source our beans from the Forbidden Forest and the misty peaks of the Himalayas for a truly ethereal flavor.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>Lightning Service</h3>
+                <p>Our baristas are trained in the 'Accio Coffee' charm, ensuring your drink arrives faster than a Firebolt broomstick.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🏰</span>
+                <h3>Magical Ambience</h3>
+                <p>A place where the portraits talk (mostly about coffee) and the candles float, creating the perfect study spot.</p>
+            </div>
+        </div>
+
+        <section class="testimonials">
+            <h2>HEARD AT THE OWLY POST</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    "The 'Liquid Luck' Latte actually helped me pass my Potions exam! It's like magic in a mug."
+                    <span class="author">— H. Granger</span>
+                </div>
+                <div class="testimonial-card">
+                    "I've traveled the world, but nowhere brews a 'Phoenix Roast' quite like this sanctuary."
+                    <span class="author">— N. Scamander</span>
+                </div>
+                <div class="testimonial-card">
+                    "The atmosphere is so cozy, I almost forgot I was hiding from... well, nevermind. Best coffee ever!"
+                    <span class="author">— S. Black</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <h2 class="footer-logo">THE ENCHANTED BREW</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <span>🪄</span> <span>🌙</span> <span>⭐</span> <span>🦉</span>
+        </div>
+        <p class="motto">"MISCHIEF MANAGED"</p>
+        <p class="copyright">&copy; 2025 The Enchanted Brew. All magical rights reserved.</p>
+    </footer>
+
+    <script>
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    icon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Waiting for user interaction..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (music.paused) {
+                music.play();
+                icon.innerText = "🔊";
+            } else {
+                music.pause();
+                icon.innerText = "🔇";
+            }
+        }
+
+        function initMagic() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 2.5 + 'px';
+                star.style.height = star.style.width;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+                container.appendChild(star);
+            }
+        }
+        window.onload = initMagic;
+    </script>
+</body>
+</html>

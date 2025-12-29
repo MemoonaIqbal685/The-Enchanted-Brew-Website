@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes | The Enchanted Brew</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0d0a14;
+            --card-bg: #1a1425;
+            --text-color: #f0e6d2;
+            --accent-blue: #70a1ff;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Lora', serif;
+            margin: 0;
+            text-align: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #1a1425 0%, #0d0a14 100%);
+        }
+
+        #stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+        }
+
+        h1, h2, h3, .nav-logo {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(13, 10, 20, 0.9);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo { font-size: 1.2rem; text-decoration: none; font-weight: bold; }
+        .nav-links { list-style: none; display: flex; gap: 25px; margin: 0; padding: 0; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-size: 0.8rem; letter-spacing: 1px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        header { padding: 60px 20px; }
+        .main-title { font-size: 3.5rem; margin: 0; }
+        .tagline { font-style: italic; margin-top: 10px; opacity: 0.9; font-size: 1.2rem; }
+
+        .separator {
+            width: 60%; border: 0; height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 40px auto; opacity: 0.5;
+        }
+
+        /* --- RECIPE GRID --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+        }
+
+        .magic-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 45px 20px 25px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .magic-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .item-sticker {
+            position: absolute;
+            top: -35px;
+            right: 15px;
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            border: 3px solid var(--gold);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background: var(--dark-bg);
+            z-index: 2;
+        }
+
+        .item-sticker img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .view-btn {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* --- MODAL STYLE --- */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: #1a1425;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            position: relative;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+            animation: modalFade 0.4s ease-out;
+            color: #f0e6d2;
+            text-align: left;
+        }
+
+        @keyframes modalFade {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 2rem;
+            color: var(--gold);
+            cursor: pointer;
+        }
+
+        .recipe-title { font-size: 1.8rem; margin-bottom: 20px; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
+        .recipe-section-title { color: var(--gold); font-family: 'Cinzel'; margin: 15px 0 5px; font-size: 1.1rem; }
+        .modal-body ul { padding-left: 20px; line-height: 1.6; }
+        .modal-body p { line-height: 1.6; font-style: italic; opacity: 0.9; }
+
+        /* --- MUSIC TOGGLE --- */
+        .music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1001;
+            background: rgba(26, 20, 37, 0.9);
+            border: 2px solid var(--gold);
+            color: var(--gold);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        footer { padding: 60px 20px; background: rgba(0,0,0,0.3); border-top: 1px solid rgba(212, 175, 55, 0.1); }
+        .mischief { letter-spacing: 4px; color: var(--gold); font-family: 'Cinzel', serif; margin-top: 20px; }
+
+        @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+    </style>
+</head>
+<body onclick="enableAudio()">
+
+    <audio id="bg-music" loop>
+        <source src="harry_potter.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-toggle" id="music-btn" onclick="toggleMusic(event)">
+        <span id="music-icon">🔇</span>
+    </div>
+
+    <div id="stars-container"></div>
+
+    <nav>
+        <a href="#" class="nav-logo">THE ENCHANTED BREW</a>
+        <ul class="nav-links">
+            <li><a href="home.html">HOME</a></li>
+            <li><a href="about.html">ABOUT US</a></li>
+            <li><a href="enchantementmenue.html">MENU</a></li>
+            <li><a href="recipes.html">RECIPES</a></li>
+            <li><a href="contact22.html">CONTACT</a></li>
+            <li><a href="community.html">COMMUNITY</a></li>
+            <li><a href="order.html">ORDER NOW</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1 class="main-title">THE RECIPE SCROLLS</h1>
+        <p class="tagline">"Ancient potion formulas for the modern wizard"</p>
+        <div style="font-size: 40px; margin-top: 20px;">📜</div>
+    </header>
+
+    <hr class="separator">
+
+    <div class="grid-container" id="recipeGrid"></div>
+
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBtn">&times;</span>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <h2 class="footer-logo">THE ENCHANTED BREW</h2>
+        <div style="font-size: 1.5rem; margin: 20px 0;">
+            <span>🪄</span> <span>🌙</span> <span>⭐</span> <span>🦉</span>
+        </div>
+        <p class="mischief">"MISCHIEF MANAGED"</p>
+        <p class="copyright">&copy; 2025 The Enchanted Brew. All magical rights reserved.</p>
+    </footer>
+
+    <script>
+        // Audio Logic
+        const music = document.getElementById('bg-music');
+        const icon = document.getElementById('music-icon');
+        let audioEnabled = false;
+
+        function enableAudio() {
+            if (!audioEnabled) {
+                music.play().then(() => {
+                    icon.innerText = "🔊";
+                    audioEnabled = true;
+                }).catch(err => console.log("Waiting for interaction..."));
+            }
+        }
+
+        function toggleMusic(event) {
+            event.stopPropagation(); 
+            if (music.paused) {
+                music.play();
+                icon.innerText = "🔊";
+            } else {
+                music.pause();
+                icon.innerText = "🔇";
+            }
+        }
+
+        // RECIPE DATA
+        const recipes = [
+            { 
+                id: 1, 
+                name: "The Patronus Brew", 
+                img: "Coffe/nathan-dumlao-dAYJfrtVjh0-unsplash.jpg", 
+                ingredients: ["2 shots of concentrated hope (Espresso)", "Silver mist essence", "1 tsp Moon sugar", "Steamed unicorn milk"],
+                steps: "Chant 'Expecto Patronum' while frothing the milk. Gently pour over the espresso to create a silver mist effect. ✨"
+            },
+            { 
+                id: 2, 
+                name: "Polyjuice Latte", 
+                img: "Coffe/Screenshot 2025-12-25 203539.png", 
+                ingredients: ["Fluxweed syrup", "Knotgrass infused coffee", "A dash of personality", "Warm milk"],
+                steps: "Brew the coffee dark. Add syrup and stir 7 times clockwise. Sip slowly to feel the flavor shift! 🧪"
+            },
+            { 
+                id: 3, 
+                name: "Butterbeer Cap", 
+                img: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=300", 
+                ingredients: ["Butterscotch sauce", "Creamy espresso", "Toffee bits", "Double froth milk"],
+                steps: "Layer the butterscotch at the bottom. Pour espresso and top with dense foam. Sprinkle toffee like gold dust. 🍺"
+            },
+            { 
+                id: 4, 
+                name: "Midnight Mocha", 
+                img: "Coffe/Screenshot 2025-12-25 205710.png", 
+                ingredients: ["Dark obsidian cocoa", "Moonlight espresso", "Vanilla bean clouds", "Whipped cream"],
+                steps: "Mix cocoa and espresso under a dim light. Top with whipped cream to represent midnight clouds. 🌙"
+            },
+            { 
+                id: 5, 
+                name: "Felix Felicis Gold", 
+                img: "https://images.unsplash.com/photo-1610889556528-9a770e32642f?w=300", 
+                ingredients: ["Liquid luck (Honey)", "Golden turmeric", "White chocolate", "Double espresso"],
+                steps: "Whisk the golden turmeric until it glows. Drink before a big exam or Quidditch match for ultimate success! 🏆"
+            },
+            { 
+                id: 6, 
+                name: "Phoenix Ember Roast", 
+                img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=300", 
+                ingredients: ["Dark roast coffee", "Cinnamon bark", "A pinch of cayenne pepper", "Orange zest"],
+                steps: "The cayenne adds a 'breath of fire'. Perfect for rising from the ashes of a long, tiring day. 🔥"
+            },
+            { 
+                id: 7, 
+                name: "Wizard's Mist", 
+                img: "Coffe/Screenshot 2025-12-25 205847.png", 
+                ingredients: ["Earl Grey tea base", "Lavender syrup", "Blueberry swirl", "Condensed starlight"],
+                steps: "Brew the tea until deep purple. Add lavender and watch the mist swirl inside your magical cup. 💨"
+            },
+            { 
+                id: 8, 
+                name: "Grim's Espresso", 
+                img: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=300", 
+                ingredients: ["Extra dark beans", "Charcoal powder", "Strong Ristretto", "Bittersweet cocoa"],
+                steps: "Look closely at the coffee grounds at the bottom... do you see the omen of the black dog? 🐾"
+            },
+            { 
+                id: 9, 
+                name: "Starlight Flat White", 
+                img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=300", 
+                ingredients: ["Micro-foam milk", "Edible silver glitter", "Vanilla extract", "Light roast coffee"],
+                steps: "Pour the milk in a circular motion to create a galaxy. Top with edible silver stars for extra magic. ⭐"
+            }
+        ];
+
+        function displayRecipes() {
+            const grid = document.getElementById('recipeGrid');
+            grid.innerHTML = recipes.map(item => `
+                <div class="magic-card" onclick="openRecipe(${item.id})">
+                    <div class="item-sticker">
+                        <img src="${item.img}" alt="${item.name}">
+                    </div>
+                    <h3>${item.name}</h3>
+                    <p style="font-style:italic; opacity:0.8; font-size:0.9rem;">Click to reveal the ancient formula...</p>
+                    <div class="view-btn">✨ View Recipe Scroll</div>
+                </div>
+            `).join('');
+        }
+
+        const modal = document.getElementById('recipeModal');
+        const modalBody = document.getElementById('modalBody');
+
+        function openRecipe(id) {
+            const recipe = recipes.find(r => r.id === id);
+            modalBody.innerHTML = `
+                <h2 class="recipe-title">${recipe.name} 🪄</h2>
+                <div class="recipe-section-title">🔮 The Potion Ingredients:</div>
+                <ul>
+                    ${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                </ul>
+                <div class="recipe-section-title">🔥 Brewing Incantations:</div>
+                <p>${recipe.steps}</p>
+                <p style="text-align:center; margin-top:20px; color:var(--gold);">Enjoy your magical brew! 🦉</p>
+            `;
+            modal.style.display = 'flex';
+        }
+
+        document.getElementById('closeBtn').onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
+
+        function initMagic() {
+            const container = document.getElementById('stars-container');
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 2.5}px`;
+                star.style.height = star.style.width;
+                star.style.backgroundColor = 'white';
+                star.style.borderRadius = '50%';
+                star.style.opacity = Math.random();
+                star.style.animation = `twinkle ${2 + Math.random() * 3}s infinite alternate`;
+                container.appendChild(star);
+            }
+        }
+
+        window.onload = () => {
+            initMagic();
+            displayRecipes();
+        };
+    </script>
+</body>
+</html>
